@@ -1,0 +1,51 @@
+<?php
+/**
+ * Version 1.0
+ * This module takes a tumblr hyve build 'banner' and put's it in a block.
+ * The created block will be assigned to 'three_33_third' and enabled by default. 
+ * But you should be able to change te block location after enabeling the module.
+ * 
+ * Next versions will support:
+ * - an admin form to change status ( enabled or not )
+ * - an admin form to change region
+ * - name input of the banner(s)
+ * - multiple banners, different regions and statuses
+ * - option to change location of banner ( center / left / right ) within the block
+ */
+
+/**
+ * Implements hook_block_info()
+ */
+function bannert_block_info() {
+	$blocks['bannert'] = array(
+		'info' => t('bannert'),
+		'cache' => DRUPAL_CACHE_PER_PAGE,
+		'region' => 'three_33_third',
+		'status' => 1,
+	);
+	
+	return $blocks;
+}
+
+/**
+ * Implements hook_bock_view()
+ */
+function bannert_block_view($delta = ''){
+	$block['subject'] = t('');
+	$block['content'] = _bannert_get_bannert();
+	
+	return $block;
+}
+
+/**
+ * get hype banner to put in the block_view
+ */
+function _bannert_get_bannert() {
+	global $base_url;
+	
+	$banner = file_get_contents(drupal_get_path('module','bannert') . "/banner.html");
+	
+	$replacement = 'src="' . $base_url . '/' . drupal_get_path('module','bannert') . '/';
+	$banner = preg_replace('/src\=\"/', $replacement, $banner);
+	return '<center>'.$banner.'</center>';
+}

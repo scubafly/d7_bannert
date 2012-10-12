@@ -1,0 +1,7 @@
+name = Bannert
+description = create banner blocks for at_biz module.
+package = jbbi
+core = 7.x
+files[] = banner.module
+
+version = "7.x-1.0"
